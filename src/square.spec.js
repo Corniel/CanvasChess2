@@ -254,7 +254,6 @@ describe('Square', () => {
                 square10 = new Square('d5'),
                 square11 = new Square('c3');
 
-
             expect(square1.isQueenMove(square2)).toBe(true);
             expect(square1.isQueenMove(square3)).toBe(true);
             expect(square1.isQueenMove(square4)).toBe(true);
