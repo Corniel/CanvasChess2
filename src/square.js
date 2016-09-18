@@ -63,7 +63,7 @@ export class Square {
      * @param {string} newFile - The lowercase letter of the new file.
      */
     set file(newFile) {
-        name = newFile + this.rank;
+        let name = newFile + this.rank;
         this.name = name;
     }
 
@@ -81,9 +81,12 @@ export class Square {
      * @throws Will throw an error if newRank is of type Number, rather than String.
      */
     set rank(newRank) {
+        let name;
+
         if (typeof newRank === 'number') {
             throw new Error('Rank must be a string, not a number');
         }
+
         name = this.file + newRank;
         this.name = name;
     }
@@ -287,7 +290,7 @@ export class Square {
 
 function validSquareName (squareName) {
     return (/^[a-h][1-8]$/.test(squareName));
-};
+}
 
 function addNumberToCharacter (number, character) {
     let currentFileNumber,
@@ -296,7 +299,7 @@ function addNumberToCharacter (number, character) {
 
     currentFileNumber = convertCharacterToNumber(character);
     newFileNumber = currentFileNumber + number;
-    fileCharacter = convertNumberToCharacter(newFileNumber)
+    fileCharacter = convertNumberToCharacter(newFileNumber);
 
     return fileCharacter;
 }

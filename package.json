@@ -3,7 +3,9 @@
   "version": "2.0.0",
   "description": "A chess UI based on the HTML5 Canvas",
   "scripts": {
-    "test": "karma start"
+    "test": "karma start",
+    "test:watch": "npm test -- --auto-watch --no-single-run",
+    "eslint": "eslint src"
   },
   "author": "Ryan Cook",
   "license": "MIT",
@@ -12,6 +14,7 @@
     "babel-loader": "^6.2.5",
     "babel-polyfill": "^6.13.0",
     "babel-preset-es2015": "^6.14.0",
+    "eslint": "^3.5.0",
     "jasmine": "^2.5.2",
     "jasmine-core": "^2.5.2",
     "karma": "^1.3.0",

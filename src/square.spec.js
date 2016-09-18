@@ -1,3 +1,5 @@
+/* eslint-env jasmine */
+
 import { Square } from './square';
 
 describe('Square', () => {
