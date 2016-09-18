@@ -7,7 +7,7 @@
  *   let square = new Square('f1');
  *   square.name = 'f2';
  *
- * A square is able to compare itself to other squares, in terms its spatial relationship. For instance, it knows if
+ * A square is able to compare itself to other squares, in terms of its spatial relationship. For instance, it knows if
  * it is on the same file, a knight-move away, etc.
  *
  * Since squares are not immutable, a clone() method is provided for creating defensive copies. If a class holds a
@@ -18,6 +18,7 @@ export class Square {
     /**
      * Create a square.
      * @param {string} name - The name of the square, in algebraic notation.
+     * @throws Will throw an error if name is not provided, or is not a valid square name.
      */
     constructor(name) {
         if (!name) {
@@ -40,6 +41,7 @@ export class Square {
     /**
      * Set the square's name.
      * @param {string} name - The name of the square, in algebraic notation.
+     * @throws Will throw an error if newName is not a valid square name.
      */
     set name(newName) {
         if (!validSquareName(newName)) {
@@ -76,6 +78,7 @@ export class Square {
     /**
      * Set the square's rank.
      * @param {string} newRank - The number of the new rank, as a string.
+     * @throws Will throw an error if newRank is of type Number, rather than String.
      */
     set rank(newRank) {
         if (typeof newRank === 'number') {

@@ -15,6 +15,7 @@ export class Move {
      * Create a move.
      * @param {Square} startSquare - The starting square of the move.
      * @param {Square} endSquare - The ending square of the move.
+     * @throws Will throw an error if the start/end squares are missing, or are not of type Square.
      */
     constructor(startSquare, endSquare) {
         if (!startSquare || !endSquare) {
