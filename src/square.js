@@ -21,13 +21,7 @@ export class Square {
      * @throws Will throw an error if name is not provided, or is not a valid square name.
      */
     constructor(name) {
-        if (!name) {
-            throw new Error('Square must have a name');
-        }
-        if (!validSquareName(name)) {
-            throw new Error('Invalid square name');
-        }
-        this._name = name;
+        this.name = name;
     }
 
     /**
