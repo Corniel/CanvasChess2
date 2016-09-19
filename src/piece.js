@@ -1,4 +1,13 @@
-export class Piece {
+/**
+ * An abstract class representing a chess piece.
+ *
+ * A piece contains a color and a type. Each value is represented by a single lowercase letter. For example, a white
+ * pawn would have the values: color='w', type='p'.
+ *
+ * This class is not exported because it is meant to serve as a base class for specific types of pieces. The type
+ * property is set by the derived class.
+ */
+class Piece {
     /**
      * Create a piece.
      * @param {string} color - The color of the piece: w|b.
@@ -69,40 +78,11 @@ export class Piece {
     equals(piece) {
         return (this._color === piece._color && this._type === piece._type);
     }
-
-    /**
-     * Factory method for creating a piece, when the type is unknown until runtime.
-     * @param {string} The piece type and the color. Examples: wp, bn
-     * @return {Piece} A piece of the appropriate type.
-     */
-    static create(pieceAndColor) {
-        let pieceType,
-            color;
-
-        if (typeof pieceAndColor === 'string' && pieceAndColor.length === 2) {
-            pieceType = pieceAndColor.substr(1, 1);
-            color = pieceAndColor.substr(0, 1);
-        }
-
-        switch (pieceType) {
-            case 'p':
-                return new Pawn(color);
-            case 'n':
-                return new Knight(color);
-            case 'b':
-                return new Bishop(color);
-            case 'r':
-                return new Rook(color);
-            case 'q':
-                return new Queen(color);
-            case 'k':
-                return new King(color);
-            default:
-                return new NullPiece();
-        }
-    }
 }
 
+/**
+ * Pawn inherits all of the methods from Piece, but also sets its internal type to 'p' for .equals() comparisons.
+ */
 export class Pawn extends Piece {
     constructor(color) {
         super(color);
@@ -110,6 +90,9 @@ export class Pawn extends Piece {
     }
 }
 
+/**
+ * Knight inherits all of the methods from Piece, but also sets its internal type to 'n' for .equals() comparisons.
+ */
 export class Knight extends Piece {
     constructor(color) {
         super(color);
@@ -117,6 +100,9 @@ export class Knight extends Piece {
     }
 }
 
+/**
+ * Bishop inherits all of the methods from Piece, but also sets its internal type to 'b' for .equals() comparisons.
+ */
 export class Bishop extends Piece {
     constructor(color) {
         super(color);
@@ -124,6 +110,9 @@ export class Bishop extends Piece {
     }
 }
 
+/**
+ * Rook inherits all of the methods from Piece, but also sets its internal type to 'r' for .equals() comparisons.
+ */
 export class Rook extends Piece {
     constructor(color) {
         super(color);
@@ -131,6 +120,9 @@ export class Rook extends Piece {
     }
 }
 
+/**
+ * Queen inherits all of the methods from Piece, but also sets its internal type to 'q' for .equals() comparisons.
+ */
 export class Queen extends Piece {
     constructor(color) {
         super(color);
@@ -138,6 +130,9 @@ export class Queen extends Piece {
     }
 }
 
+/**
+ * King inherits all of the methods from Piece, but also sets its internal type to 'k' for .equals() comparisons.
+ */
 export class King extends Piece {
     constructor(color) {
         super(color);
@@ -145,10 +140,52 @@ export class King extends Piece {
     }
 }
 
+/**
+ * The NullPiece is useful when you don't know if you have a reference to a real piece. For example, if you are
+ * checking the color of a piece on a given square, you can avoid having to first check for a null reference by 
+ * returning a NullPiece instead. With the NullPiece, you can call the same methods that exist for a real piece,
+ * but they will always return false.
+ */
 export class NullPiece {
     constructor() {
         this.color = '';
         this.type = '';
+    }
+
+    isWhite() { return false; }
+    isBlack() { return false; }
+    isColor() { return false; }
+}
+
+/**
+ * Factory for creating a piece, when the type is unknown until runtime.
+ * @param {string} The piece type and the color. Examples: wp, bn
+ * @return {Piece} A piece of the appropriate type.
+ */
+export function create(pieceAndColor) {
+    let pieceType,
+        color;
+
+    if (typeof pieceAndColor === 'string' && pieceAndColor.length === 2) {
+        pieceType = pieceAndColor.substr(1, 1);
+        color = pieceAndColor.substr(0, 1);
+    }
+
+    switch (pieceType) {
+        case 'p':
+            return new Pawn(color);
+        case 'n':
+            return new Knight(color);
+        case 'b':
+            return new Bishop(color);
+        case 'r':
+            return new Rook(color);
+        case 'q':
+            return new Queen(color);
+        case 'k':
+            return new King(color);
+        default:
+            return new NullPiece();
     }
 }
 

@@ -1,4 +1,4 @@
-import { Piece } from './piece';
+import * as Piece from './piece';
 import { Square } from './square';
 
 export class Position {

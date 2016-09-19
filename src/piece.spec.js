@@ -1,6 +1,6 @@
 /* eslint-env jasmine */
 
-import { Piece, Pawn, Knight, Bishop, Rook, Queen, King, NullPiece } from './piece';
+import { create, Pawn, Knight, Bishop, Rook, Queen, King, NullPiece } from './piece';
 
 describe('Piece', () => {
 
@@ -33,13 +33,13 @@ describe('Piece', () => {
     });
 
     it('can create a piece from a string', () => {
-        let pawn = Piece.create('wp'),
-            knight = Piece.create('bn'),
-            bishop = Piece.create('wb'),
-            rook = Piece.create('br'),
-            queen = Piece.create('wq'),
-            king = Piece.create('bk'),
-            nullPiece = Piece.create('');
+        let pawn = create('wp'),
+            knight = create('bn'),
+            bishop = create('wb'),
+            rook = create('br'),
+            queen = create('wq'),
+            king = create('bk'),
+            nullPiece = create('');
 
         expect(pawn instanceof Pawn).toBe(true);
         expect(knight instanceof Knight).toBe(true);
