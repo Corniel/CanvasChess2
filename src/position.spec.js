@@ -160,6 +160,15 @@ describe('Position', () => {
             expect(squares[1].name).toBe('f1');
         });
 
+        it('updates the fen after the position has changed', () => {
+            let position = new Position('8/8/8/8/8/8/8/8 w - - 0 1');
+            position.setPiece(new Square('a1'), new Rook('w'));
+            position.setPiece(new Square('h1'), new Rook('w'));
+            position.setPiece(new Square('a8'), new Rook('b'));
+            position.setPiece(new Square('h8'), new Rook('b'));
+            expect(position.fen).toBe('r6r/8/8/8/8/8/8/R6R w - - 0 1');
+        });
+
     });
 
 });

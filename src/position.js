@@ -1,15 +1,45 @@
 import * as Piece from './piece';
 import { Square } from './square';
 
+/**
+ * A class representing a chess position.
+ *
+ * A position is created from an FEN string (https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation). FEN is a
+ * concise and human-readable notation for representing a chess position.
+ *
+ *   Ex: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'
+ *
+ * This class provides methods for changing the position of the pieces, as well as other game state data. After changes
+ * have been made, the position's new FEN is accessible through the fen property.
+ */
 export class Position {
+    /**
+     * Create a position.
+     * @param {string} fen - The FEN string representing the position.
+     * @throws Will throw an error if the FEN is not valid.
+     */
     constructor(fen) {
         this.fen = fen;
     }
 
+    /**
+     * Get the FEN.
+     * @return {string} The FEN.
+     */
     get fen() {
-        return this._fen;
+        return [
+            dataToFenPosition(this._positionArray),
+            this._colorToMove,
+            dataToFenCastling(this._castleWK, this._castleWQ, this._castleBK, this._castleBQ),
+            this._enPassant,
+            '0 1'
+        ].join(' ');
     }
 
+    /**
+     * Set the FEN.
+     * @param {string} fen - The FEN.
+     */
     set fen(fen) {
         let castling;
 
@@ -30,66 +60,129 @@ export class Position {
         this._positionArray = setPieces(fen);
     }
 
+    /**
+     * Get the en passant square.
+     * @return {string} The en passant square in algebraic notation (ex. 'e3').
+     */
     get enPassantSquare() {
         return this._enPassant;
     }
 
+    /**
+     * Determine if White is to move.
+     * return {boolean} True if White is to move, otherwise false.
+     */
     isWhiteToMove() {
         return (this._colorToMove === 'w');
     }
 
+    /**
+     * Determine if Black is to move.
+     * return {boolean} True if Black is to move, otherwise false.
+     */
     isBlackToMove() {
         return !this.isWhiteToMove();
     }
 
+    /**
+     * Determine if Black can castle kingside.
+     * @return {boolean} True if Black can castle kingside, otherwise false.
+     */
     canBlackCastleKingside() {
         return this._castleBK;
     }
 
+    /**
+     * Determine if Black can castle queenside.
+     * @return {boolean} True if Black can castle queenside, otherwise false.
+     */
     canBlackCastleQueenside() {
         return this._castleBQ;
     }
 
+    /**
+     * Determine if White can castle kingside.
+     * @return {boolean} True if White can castle kingside, otherwise false.
+     */
     canWhiteCastleKingside() {
         return this._castleWK;
     }
 
+    /**
+     * Determine if White can castle queenside.
+     * @return {boolean} True if White can castle queenside, otherwise false.
+     */
     canWhiteCastleQueenside() {
         return this._castleWQ;
     }
 
+    /**
+     * Get the color of the player who is to move.
+     * @return {string} The color of the player to move: w|b.
+     */
     getColorToMove() {
         return this._colorToMove;
     }
 
+    /**
+     * Get the color of the player who is NOT to move.
+     * @return {string} The color of the player NOT to move: w|b.
+     */
     getColorNotToMove() {
         return (this._colorToMove === 'w') ? 'b' : 'w';
     }
 
+    /**
+     * Set Black as the player to move.
+     */
     setBlackToMove() {
         this._colorToMove = 'b';
     }
 
+    /**
+     * Set White as the player to move.
+     */
     setWhiteToMove() {
         this._colorToMove = 'w';
     }
 
-    setBlackCastleKingside() {
-        this._castleBK = true;
+    /**
+     * Set Black's ability to castle kingside.
+     * @param {boolean} [canCastle=true] Whether or not Black can castle on the kingside.
+     */
+    setBlackCastleKingside(canCastle = true) {
+        this._castleBK = (canCastle === true);
     }
 
-    setBlackCastleQueenside() {
-        this._castleBQ = true;
+    /**
+     * Set Black's ability to castle queenside.
+     * @param {boolean} [canCastle=true] Whether or not Black can castle on the queenside.
+     */
+    setBlackCastleQueenside(canCastle = true) {
+        this._castleBQ = (canCastle === true);
     }
 
-    setWhiteCastleKingside() {
-        this._castleWK = true;
+    /**
+     * Set White's ability to castle kingside.
+     * @param {boolean} [canCastle=true] Whether or not White can castle on the kingside.
+     */
+    setWhiteCastleKingside(canCastle = true) {
+        this._castleWK = (canCastle === true);
     }
 
-    setWhiteCastleQueenside() {
-        this._castleWQ = true;
+    /**
+     * Set White's ability to castle queenside.
+     * @param {boolean} [canCastle=true] Whether or not White can castle on the queenside.
+     */
+    setWhiteCastleQueenside(canCastle = true) {
+        this._castleWQ = (canCastle === true);
     }
 
+    /**
+     * Get the piece on a given square.
+     * @param {Square} square - The square look at when retrieving a piece.
+     * @return {Piece} The piece.
+     */
     getPiece(square) {
         let x = square.file,
             y = square.rank,
@@ -107,6 +200,11 @@ export class Position {
         return Piece.create(pieceAndColor); 
     }
 
+    /**
+     * Set the piece on a given square.
+     * @param {Square} square - The square to place the piece on.
+     * @param {Piece} piece - The piece to place on the square.
+     */
     setPiece(square, piece) {
         let x = square.file,
             y = square.rank;
@@ -117,6 +215,11 @@ export class Position {
         this._positionArray[y][x] = piece.color + piece.type;
     }
 
+    /**
+     * Find all squares containing a piece.
+     * @param {Piece} piece - The piece to search for.
+     * @return {Square[]} An array containing all of the squares that have the given piece.
+     */
     findPiece(piece) {
         let squares = [];
 
@@ -217,6 +320,79 @@ function getSquareName(x, y) {
     let file = String.fromCharCode(x + 97),
         rank = 8 - y;
     return (file + rank);
+}
+
+function dataToFenCastling(castleWK, castleWQ, castleBK, castleBQ) {
+    let castling = '';
+
+    if (castleWK) {
+        castling += 'K';
+    }
+    if (castleWQ) {
+        castling += 'Q';
+    }
+    if (castleBK) {
+        castling += 'k';
+    }
+    if (castleBQ) {
+        castling += 'q';
+    }
+
+    return (castling === '' ? '-' : castling);
+}
+
+function dataToFenPosition(positionArray) {
+    let rows = [];
+
+    for (let rowNumber = 0; rowNumber < positionArray.length; rowNumber += 1) {
+        rows.push(dataToFenPositionRow(positionArray, rowNumber));
+    }
+
+    return rows.join('/');
+}
+
+function dataToFenPositionRow(positionArray, rowNumber) {
+    let piece,
+        row = '';
+
+    for (let columnNumber = 0; columnNumber < positionArray[rowNumber].length; columnNumber += 1) {
+        piece = dataToFenPiece(positionArray[rowNumber][columnNumber]);
+        row = updateOrAppendToFenPositionRow(row, piece);
+    }
+
+    return row;
+}
+
+function updateOrAppendToFenPositionRow(row, piece) {
+    let emptySquares = 0;
+
+    if (piece === '') {
+        if (row.length > 0) {
+            emptySquares = row.slice(-1);
+            if (/^[1-7]$/.test(emptySquares)) {
+                emptySquares = parseInt(emptySquares, 10);
+            } else {
+                emptySquares = 0;
+            }
+            if (emptySquares > 0) {
+                row = row.slice(0, row.length - 1);
+            }
+        }
+        row += (++emptySquares + '');
+    } else {
+        row += piece;
+    }
+
+    return row;
+}
+
+function dataToFenPiece(dataPiece) {
+    let color = dataPiece.substr(0, 1),
+        fenPiece = dataPiece.substr(1, 1);
+    if (color === 'w') {
+        fenPiece = fenPiece.toUpperCase();
+    }
+    return fenPiece;
 }
 
 function getEmptyPositionArray() {
