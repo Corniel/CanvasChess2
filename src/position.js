@@ -69,6 +69,18 @@ export class Position {
     }
 
     /**
+     * Set the en passant square.
+     * @param {string} The en passant square in algebraic notation (ex. 'e3').
+     */
+    set enPassantSquare(square) {
+        if (/^[a-h][3-6]$/.test(square)) {
+            this._enPassant = square;
+        } else {
+            this._enPassant = '-';
+        }
+    }
+
+    /**
      * Determine if White is to move.
      * return {boolean} True if White is to move, otherwise false.
      */
@@ -387,11 +399,21 @@ function updateOrAppendToFenPositionRow(row, piece) {
 }
 
 function dataToFenPiece(dataPiece) {
-    let color = dataPiece.substr(0, 1),
-        fenPiece = dataPiece.substr(1, 1);
+    let color,
+        fenPiece;
+
+    // TODO: Figure out why dataPiece is sometimes NaN. This should never happen.
+    if (!dataPiece) {
+        return dataPiece;
+    }
+
+    color = dataPiece.substr(0, 1);
+    fenPiece = dataPiece.substr(1, 1);
+
     if (color === 'w') {
         fenPiece = fenPiece.toUpperCase();
     }
+
     return fenPiece;
 }
 
