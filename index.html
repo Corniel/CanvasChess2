@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <script src="dist/canvaschess.bundle.js" charset="utf-8"></script>
+    <script>
+        var position = new CanvasChess.Position('rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1');
+        position.setPiece('e2', '');
+        position.setPiece('e4', 'wp');
+        console.log(position.fen);
+    </script>
+  </body>
+</html>
