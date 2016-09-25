@@ -169,6 +169,17 @@ describe('Position', () => {
             expect(position.fen).toBe('r6r/8/8/8/8/8/8/R6R w - - 0 1');
         });
 
+        it('allows string representations of squares and pieces', () => {
+            let position = new Position('8/8/8/8/8/8/8/8 w - - 0 1');
+            position.setPiece('a1', 'wr');
+            position.setPiece('a8', 'br');
+            expect(position.fen).toBe('r7/8/8/8/8/8/8/R7 w - - 0 1');
+
+            position.setPiece('a1', '');
+            position.setPiece('a8', '');
+            expect(position.fen).toBe('8/8/8/8/8/8/8/8 w - - 0 1');
+        });
+
     });
 
 });

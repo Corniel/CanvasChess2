@@ -214,12 +214,23 @@ export class Position {
 
     /**
      * Set the piece on a given square.
-     * @param {Square} square - The square to place the piece on.
-     * @param {Piece} piece - The piece to place on the square.
+     * @param {Square|string} square - The square to place the piece on.
+     * @param {Piece|string} piece - The piece to place on the square.
      */
     setPiece(square, piece) {
-        let x = square.file,
-            y = square.rank;
+        let x,
+            y;
+
+        if (typeof square === 'string') {
+            square = new Square(square);
+        }
+
+        if (typeof piece === 'string') {
+            piece = Piece.create(piece);
+        }
+
+        x = square.file;
+        y = square.rank;
 
         x = x.charCodeAt(0) - 97;
         y = 8 - y;
