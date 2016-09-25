@@ -3,9 +3,9 @@ import { Move } from './move';
 import { Position } from './position';
 import * as Piece from './piece';
 
-export class BoardMover {
+export class PieceMover {
     /**
-     * Create a BoardMover for a given position.
+     * Create a PieceMover for a given position.
      * @param {Position} position - The initial position.
      */
     constructor(position) {
